@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Anime Quiz Pro</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div id="app">
+
+<header>
+
+<h1>🎌 Anime Quiz Pro</h1>
+
+<p>اختبر معلوماتك في عالم الأنمي</p>
+
+</header>
+
+<div class="menu">
+
+<button class="menu-btn" onclick="startQuiz('naruto')">
+🍥 Naruto
+</button>
+
+<button class="menu-btn" onclick="startQuiz('onepiece')">
+☠️ One Piece
+</button>
+
+<button class="menu-btn" onclick="startQuiz('dragonball')">
+🐉 Dragon Ball
+</button>
+
+<button class="menu-btn" onclick="startQuiz('aot')">
+⚔️ Attack on Titan
+</button>
+
+<button class="menu-btn" onclick="startQuiz('demonslayer')">
+👹 Demon Slayer
+</button>
+
+</div>
+
+<div id="quiz" style="display:none;">
+
+<div class="top">
+
+<div>
+❤️ <span id="lives">3</span>
+</div>
+
+<div>
+⭐ <span id="score">0</span>
+</div>
+
+<div>
+⏱️ <span id="timer">20</span>
+</div>
+
+</div>
+
+<div class="progress">
+
+<div id="progressBar"></div>
+
+</div>
+
+<h2 id="question">
+
+السؤال
+
+</h2>
+
+<div id="answers">
+
+</div>
+
+</div>
+
+</div>
+
+<script src="questions.js"></script>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
