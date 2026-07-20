@@ -1,198 +1,73 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Anime Words | كلمات الأنمي</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-    <!-- استدعاء خط Cairo الاحترافي من Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <meta name="theme-color" content="#6c5ce7">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anime Words</title>
+
+<link rel="stylesheet" href="style.css">
 </head>
-<body class="light-theme">
 
-    <!-- شاشة التحميل والترحيب (Splash Screen) -->
-    <div id="splash-screen" class="screen active">
-        <div class="splash-content">
-            <div class="logo-container">
-                <h1 class="game-logo">ANIME<span>WORDS</span></h1>
-                <p class="game-subtitle">لعبة كلمات الأنمي الكبرى</p>
-            </div>
-            <div class="loader-bar">
-                <div class="loader-progress"></div>
-            </div>
-            <p class="loading-text">جاري تحميل عالم الأنمي...</p>
-        </div>
-    </div>
+<body>
 
-    <!-- الشريط العلوي العام للمعلومات (Top Bar) -->
-    <div id="global-top-bar" class="top-bar hidden">
-        <div class="stat-item" id="stat-hearts">
-            <span class="stat-icon">❤️</span>
-            <span class="stat-value" id="hearts-count">5</span>
-        </div>
-        <div class="stat-item" id="stat-coins">
-            <span class="stat-icon">🪙</span>
-            <span class="stat-value" id="coins-count">100</span>
-        </div>
-        <div class="stat-item" id="stat-xp">
-            <span class="stat-icon">⭐</span>
-            <span class="stat-value" id="xp-count">0 XP</span>
-        </div>
-        <button id="theme-toggle-btn" class="icon-btn">🌓</button>
-    </div>
+<div class="top">
 
-    <!-- الشاشة الرئيسية (Main Menu Screen) -->
-    <div id="main-menu-screen" class="screen hidden">
-        <div class="menu-content">
-            <h1 class="menu-title">كلمات الأنمي</h1>
-            <div class="profile-summary">
-                <div class="avatar">🔥</div>
-                <div class="profile-info">
-                    <span id="player-level-title">المستوى 1</span>
-                    <div class="xp-bar-container">
-                        <div id="xp-bar-fill" style="width: 0%;"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="menu-buttons">
-                <button id="btn-play" class="main-btn primary">ابدأ اللعب الآن 🎮</button>
-                <button id="btn-levels" class="main-btn secondary">اختيار المراحل 🗺️</button>
-                <button id="btn-achievements" class="main-btn secondary">الإنجازات 🏆</button>
-                <button id="btn-settings" class="main-btn secondary">الإعدادات ⚙️</button>
-            </div>
-        </div>
-    </div>
+<div class="coins">
+💰 <span id="coins">100</span>
+</div>
 
-    <!-- شاشة اختيار المراحل (Levels Screen) -->
-    <div id="levels-screen" class="screen hidden">
-        <div class="screen-header">
-            <button class="back-btn" data-target="main-menu-screen">⬅️</button>
-            <h2>المراحل والمستويات</h2>
-        </div>
-        <div class="levels-grid" id="levels-grid-container">
-            <!-- سيتم توليد المراحل ديناميكيًا بواسطة JS -->
-        </div>
-    </div>
+<div class="title">
+🎌 Anime Words
+</div>
 
-    <!-- شاشة اللعب الفعلية (Game Screen) -->
-    <div id="game-screen" class="screen hidden">
-        <div class="game-header">
-            <button class="back-btn" data-target="levels-screen">⬅️</button>
-            <div class="current-level-display">المرحلة <span id="current-level-num">1</span></div>
-            <div class="anime-tag" id="anime-category-tag">Naruto</div>
-        </div>
+</div>
 
-        <div class="game-body">
-            <!-- صوره السؤال / الأنمي -->
-            <div class="question-image-container">
-                <img id="question-image" src="assets/images/placeholder.jpg" alt="سؤال الأنمي">
-            </div>
+<div id="home">
 
-            <!-- نص السؤال -->
-            <div class="question-text-box">
-                <p id="question-text">من هي هذه الشخصية؟</p>
-            </div>
+<h1>كلمات الأنمي</h1>
 
-            <!-- مربعات الإجابة الفارغة -->
-            <div class="answer-slots-container" id="answer-slots">
-                <!-- تتولد ديناميكيًا -->
-            </div>
+<button onclick="startGame()">
+▶ ابدأ اللعب
+</button>
 
-            <!-- أزرار المساعدة السريعة -->
-            <div class="helpers-container">
-                <button id="btn-hint" class="helper-btn">
-                    <span class="helper-icon">💡</span>
-                    <span class="helper-text">تلميح (20)</span>
-                </button>
-                <button id="btn-delete" class="helper-btn">
-                    <span class="helper-icon">❌</span>
-                    <span class="helper-text">مسح</span>
-                </button>
-                <button id="btn-skip" class="helper-btn">
-                    <span class="helper-icon">⏭️</span>
-                    <span class="helper-text">تخطي (50)</span>
-                </button>
-            </div>
+</div>
 
-            <!-- لوحة الحروف العشوائية -->
-            <div class="letters-keyboard" id="keyboard-container">
-                <!-- تتولد ديناميكيًا -->
-            </div>
-        </div>
-    </div>
+<div id="game" style="display:none;">
 
-    <!-- شاشة الإعدادات (Settings Screen) -->
-    <div id="settings-screen" class="screen hidden">
-        <div class="screen-header">
-            <button class="back-btn" data-target="main-menu-screen">⬅️</button>
-            <h2>الإعدادات</h2>
-        </div>
-        <div class="settings-body">
-            <div class="setting-row">
-                <span>المؤثرات الصوتية 🔊</span>
-                <label class="switch">
-                    <input type="checkbox" id="setting-sound" checked>
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="setting-row">
-                <span>الموسيقى الخلفية 🎵</span>
-                <label class="switch">
-                    <input type="checkbox" id="setting-music">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="setting-row reset-row">
-                <button id="btn-reset-data" class="danger-btn">مسح جميع البيانات وإعادة البدء ⚠️</button>
-            </div>
-        </div>
-    </div>
+<h2 id="level">
+المرحلة 1
+</h2>
 
-    <!-- شاشة الإنجازات (Achievements Screen) -->
-    <div id="achievements-screen" class="screen hidden">
-        <div class="screen-header">
-            <button class="back-btn" data-target="main-menu-screen">⬅️</button>
-            <h2>لوحة الإنجازات</h2>
-        </div>
-        <div class="achievements-list" id="achievements-container">
-            <!-- تتولد ديناميكيًا -->
-        </div>
-    </div>
+<img id="image"
+src="assets/images/naruto.jpg">
 
-    <!-- نافذة منبثقة للنتائج والنجاح (Result Modals / Overlays) -->
-    <div id="result-overlay" class="overlay hidden">
-        <div class="modal-card scale-in" id="success-card">
-            <div class="modal-banner">إجابة صحيحة! 🎉</div>
-            <div class="modal-body">
-                <p class="perfect-text">أنت أوتاكو حقيقي!</p>
-                <div class="rewards-display">
-                    <div class="reward-box">🪙 +10</div>
-                    <div class="reward-box">⭐ +20 XP</div>
-                </div>
-                <button id="btn-next-level" class="main-btn primary">المرحلة التالية ⏭️</button>
-            </div>
-        </div>
+<p id="question">
+من هو بطل هذا الأنمي؟
+</p>
 
-        <div class="modal-card scale-in hidden" id="fail-card">
-            <div class="modal-banner danger">انتهت المحاولات! 💔</div>
-            <div class="modal-body">
-                <p>لقد نفدت القلوب لديك. يمكنك الانتظار أو استعادة القلوب مقابل العملات.</p>
-                <button id="btn-refill-hearts" class="main-btn primary">شراء قلوب كاملة (🪙 30)</button>
-                <button id="btn-fail-back" class="main-btn secondary">العودة للقائمة الرئيسية</button>
-            </div>
-        </div>
-    </div>
+<div id="word">
 
-    <!-- وسائط صوتية مخفية لعناصر اللعبة -->
-    <audio id="audio-click" src="assets/sounds/click.mp3" preload="auto"></audio>
-    <audio id="audio-success" src="assets/sounds/success.mp3" preload="auto"></audio>
-    <audio id="audio-fail" src="assets/sounds/fail.mp3" preload="auto"></audio>
-    <audio id="audio-win" src="assets/sounds/win.mp3" preload="auto"></audio>
+<span class="box"></span>
+<span class="box"></span>
+<span class="box"></span>
+<span class="box"></span>
+<span class="box"></span>
+<span class="box"></span>
+
+</div>
+
+<div id="letters">
+
+</div>
+
+<button onclick="hint()">
+💡 تلميح
+</button>
+
+</div>
+
+<script src="levels.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
