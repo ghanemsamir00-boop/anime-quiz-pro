@@ -1,73 +1,194 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anime Words</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة وصلة أنمي</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a2e;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
 
-<link rel="stylesheet" href="style.css">
+        h1 {
+            color: #e94560;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* تصميم شبكة الكلمات المتقاطعة */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 50px);
+            grid-template-rows: repeat(5, 50px);
+            gap: 5px;
+            background-color: #16213e;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .cell {
+            width: 50px;
+            height: 50px;
+            background-color: #0f3460;
+            border: 1px solid #e94560;
+            border-radius: 5px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        /* المربعات المغلقة باللون الأسود */
+        .cell.blocked {
+            background-color: #1a1a2e;
+            border: none;
+        }
+
+        /* قسم التلميحات/الأسئلة */
+        .clues {
+            background-color: #16213e;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: right;
+            width: 300px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .clues h3 {
+            color: #e94560;
+            margin-top: 0;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+
+        .clues ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .clues li {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #e94560;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff6b81;
+        }
+
+        .result {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="top">
+    <h1>وصلة أنمي - كلمات متقاطعة</h1>
+    
+    <div class="container">
+        <!-- الشبكة (5×5) -->
+        <div class="grid" id="crossword-grid"></div>
 
-<div class="coins">
-💰 <span id="coins">100</span>
-</div>
+        <!-- التلميحات -->
+        <div class="clues">
+            <h3>الأسئلة الأفقية (→)</h3>
+            <ul>
+                <li><strong>1 أفقي:</strong> بطل أنمي ون بيس (لوفي)</li>
+                <li><strong>3 أفقي:</strong> بطل أنمي ناروتو (ناروتو)</li>
+            </ul>
+            <h3>الأسئلة العمودية (↓)</h3>
+            <ul>
+                <li><strong>1 عمودي:</strong> مدرب لوفي وصاحب القبعة القشية السابق (شانكس)</li>
+            </ul>
+        </div>
 
-<div class="title">
-🎌 Anime Words
-</div>
+        <button onclick="checkAnswers()">تحقق من الإجابة</button>
+        <div class="result" id="result-message"></div>
+    </div>
 
-</div>
+    <script>
+        // إعدادات الشبكة (5 أسطر × 5 أعمدة)
+        // 0 تعني مربع فارغ (مغلق)، والحروف هي الإجابات الصحيحة في مكانها
+        const solution = [
+            ['ل', 'و', 'ف', 'ي', '0'],
+            ['ا', '0', '0', '0', '0'],
+            ['ن', 'ا', 'ر', 'و', 'ت'],
+            ['ك', '0', '0', '0', 'و'],
+            ['س', '0', '0', '0', '0']
+        ];
 
-<div id="home">
+        const gridContainer = document.getElementById('crossword-grid');
 
-<h1>كلمات الأنمي</h1>
+        // بناء الشبكة برمجياً
+        for (let r = 0; r < 5; r++) {
+            for (let c = 0; c < 5; c++) {
+                const cellVal = solution[r][c];
+                const input = document.createElement('input');
+                input.className = 'cell';
+                input.setAttribute('maxlength', '1'); // حرف واحد فقط في المربع
 
-<button onclick="startGame()">
-▶ ابدأ اللعب
-</button>
+                if (cellVal === '0') {
+                    input.classList.add('blocked');
+                    input.disabled = true; // منع الكتابة في المربعات السوداء
+                } else {
+                    input.dataset.row = r;
+                    input.dataset.col = c;
+                }
+                gridContainer.appendChild(input);
+            }
+        }
 
-</div>
+        // دالة التحقق من الإجابات
+        function checkAnswers() {
+            const inputs = document.querySelectorAll('.cell:not(.blocked)');
+            let allCorrect = true;
 
-<div id="game" style="display:none;">
+            inputs.forEach(input => {
+                const r = input.dataset.row;
+                const c = input.dataset.col;
+                const expected = solution[r][c];
+                
+                if (input.value.trim() === expected) {
+                    input.style.backgroundColor = "#28a745"; // أخضر لو الإجابة صح
+                } else {
+                    input.style.backgroundColor = "#dc3545"; // أحمر لو خطأ
+                    allCorrect = false;
+                }
+            });
 
-<h2 id="level">
-المرحلة 1
-</h2>
-
-<img id="image"
-src="assets/images/naruto.jpg">
-
-<p id="question">
-من هو بطل هذا الأنمي؟
-</p>
-
-<div id="word">
-
-<span class="box"></span>
-<span class="box"></span>
-<span class="box"></span>
-<span class="box"></span>
-<span class="box"></span>
-<span class="box"></span>
-
-</div>
-
-<div id="letters">
-
-</div>
-
-<button onclick="hint()">
-💡 تلميح
-</button>
-
-</div>
-
-<script src="levels.js"></script>
-<script src="script.js"></script>
-
+            const resultMessage = document.getElementById('result-message');
+            if (allCorrect) {
+                resultMessage.innerText = "🎉 إجابة صحيحة! أنت أوتاكو حقيقي!";
+                resultMessage.style.color = "#28a745";
+            } else {
+                resultMessage.innerText = "❌ هناك بعض الأخطاء، حاول مجدداً!";
+                resultMessage.style.color = "#dc3545";
+            }
+        }
+    </script>
 </body>
 </html>
